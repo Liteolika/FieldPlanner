@@ -8,4 +8,3 @@ var app;
         ]);
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
-//# sourceMappingURL=core.module.js.map

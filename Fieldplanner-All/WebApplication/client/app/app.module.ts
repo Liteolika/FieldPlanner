@@ -5,7 +5,8 @@ module app {
 
     angular.module("app", [
         "app.layout",
-        "app.core"
+        "app.core",
+        "app.components.home"
     ]);
 
 }

@@ -7,4 +7,3 @@ var app;
         "app.components.home"
     ]);
 })(app || (app = {}));
-//# sourceMappingURL=app.module.js.map
