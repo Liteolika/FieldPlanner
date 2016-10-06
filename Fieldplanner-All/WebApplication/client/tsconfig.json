@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es5",
+    "module": "commonjs"
+  },
+  "exclude": [
+    "bower_components",
+    "node_modules",
+    "wwwroot"
+  ],
+  "compileOnSave": false
+}

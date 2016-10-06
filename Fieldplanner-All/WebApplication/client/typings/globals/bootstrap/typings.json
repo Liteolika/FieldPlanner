@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/bootstrap/bootstrap.d.ts",
+    "raw": "github:DefinitelyTyped/DefinitelyTyped/bootstrap/bootstrap.d.ts",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/bootstrap/bootstrap.d.ts"
+  }
+}

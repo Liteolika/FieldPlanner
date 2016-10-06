@@ -1,0 +1,30 @@
+{
+  "name": "asp.net",
+  "globalDevDependencies": {
+    "angular": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular.d.ts",
+    "angular-mocks": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-mocks.d.ts",
+    "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts",
+    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts",
+    "angular-animate": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-animate.d.ts",
+    "angular-cookies": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-cookies.d.ts",
+    "angular-resource": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-resource.d.ts",
+    "angular-route": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-route.d.ts",
+    "angular-sanitize": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-sanitize.d.ts",
+    "angular-ui-router": "github:DefinitelyTyped/DefinitelyTyped/angular-ui-router/angular-ui-router.d.ts",
+    "angular-material": "github:DefinitelyTyped/DefinitelyTyped/angular-material/angular-material.d.ts",
+    "angular-local-storage": "github:DefinitelyTyped/DefinitelyTyped/angular-local-storage/angular-local-storage.d.ts",
+    "angular-toastr": "github:DefinitelyTyped/DefinitelyTyped/angular-toastr/angular-toastr.d.ts",
+    "bootstrap": "github:DefinitelyTyped/DefinitelyTyped/bootstrap/bootstrap.d.ts",
+    "sinon": "github:DefinitelyTyped/DefinitelyTyped/sinon/sinon.d.ts",
+    "angular-dialog-service": "github:DefinitelyTyped/DefinitelyTyped/angular-dialog-service/angular-dialog-service.d.ts",
+    "angular-ui-bootstrap": "github:DefinitelyTyped/DefinitelyTyped/angular-ui-bootstrap/angular-ui-bootstrap.d.ts",
+    "angular-translate": "github:DefinitelyTyped/DefinitelyTyped/angular-translate/angular-translate.d.ts"
+  },
+  "globalDependencies": {
+
+  },
+  "resolution": {
+    "main": "typings"
+  }
+
+}
