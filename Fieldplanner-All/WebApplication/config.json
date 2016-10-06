@@ -1,5 +1,6 @@
 {
   "AppSettings": {
-    "Version": "0.1.0"
+    "Version": "0.1.0",
+    "ImageRepositoryPath": "C:\\Users\\Peter\\Desktop\\canaxa\\images\\index.txt"
   }
 }
