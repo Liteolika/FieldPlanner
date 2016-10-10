@@ -34,6 +34,13 @@
                 controllerAs: "vm"
             });
 
+            this.$stateProvider.state("planner", <ng.ui.IState>{
+                url: "/planner",
+                templateUrl: "views/planner.html",
+                controller: app.components.planner.PlannerController.controllerId,
+                controllerAs: "vm"
+            });
+
 
 
         }

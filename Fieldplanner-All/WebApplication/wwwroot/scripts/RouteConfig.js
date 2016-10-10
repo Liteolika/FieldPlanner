@@ -29,6 +29,12 @@ var app;
                     controller: app.components.home.HomeController.controllerId,
                     controllerAs: "vm"
                 });
+                this.$stateProvider.state("planner", {
+                    url: "/planner",
+                    templateUrl: "views/planner.html",
+                    controller: app.components.planner.PlannerController.controllerId,
+                    controllerAs: "vm"
+                });
             }
             return RouteConfig;
         }());

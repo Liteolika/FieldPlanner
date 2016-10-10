@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +11,7 @@ namespace WebApplication.server.controllers.API
     public class TargetController : BaseApiController
     {
 
-        public static List<TargetModel> targets = new List<TargetModel>();
+        public static List<FigureModel> targets = new List<FigureModel>();
 
         public TargetController()
         {
@@ -30,12 +31,19 @@ namespace WebApplication.server.controllers.API
                     if (!string.IsNullOrEmpty(line))
                     {
                         var fields = line.Split('|');
-                        targets.Add(new TargetModel
+                        targets.Add(new FigureModel
                         {
                             ImagePath = fields[0],
                             Description = fields[1]
                         });
                     }
+                }
+
+                using (var file = System.IO.File.Open("C:\\Users\\Peter\\Desktop\\canaxa\\images\\f.json", FileMode.OpenOrCreate))
+                using (var writer = new StreamWriter(file))
+                {
+                    var json = JsonConvert.SerializeObject(targets);
+                    writer.Write(json);
                 }
 
             }
@@ -44,7 +52,7 @@ namespace WebApplication.server.controllers.API
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(targets.ToList());
+            return Ok(targets.OrderBy(x=>x.Description).ToList());
         }
 
         [HttpGet("getimage/{fileId}")]
@@ -63,17 +71,19 @@ namespace WebApplication.server.controllers.API
 
     }
 
-    public class TargetModel
+    public class FigureModel
     {
         public Guid Id { get; internal set; }
-        public string Description { get; internal set; }
-        public string ImagePath { get; internal set; }
-
-        public TargetModel()
+        public string Description { get; set; }
+        public string ImagePath { get; set; }
+        public int TargetClass { get; set; }
+        public FigureModel()
         {
             this.Id = Guid.NewGuid();
         }
 
     }
+
+    
 
 }
