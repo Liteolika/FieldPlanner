@@ -17,15 +17,15 @@ namespace WebApplication.server.controllers.API
         {
             if (targets.Count < 1)
             {
-                var fileContent = string.Empty;
+                var json = string.Empty;
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "server", "statics", "targets", "targets.json");
                 using (var file = System.IO.File.Open(filePath, System.IO.FileMode.Open))
                 using (var reader = new StreamReader(file))
                 {
-                    fileContent = reader.ReadToEnd();
+                    json = reader.ReadToEnd();
                 }
 
-                targets = JsonConvert.DeserializeObject<List<FigureModel>>(fileContent);
+                targets = JsonConvert.DeserializeObject<List<FigureModel>>(json);
 
 
                 //var fileContent = string.Empty;
@@ -61,15 +61,14 @@ namespace WebApplication.server.controllers.API
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
-            return Ok(targets.OrderBy(x=>x.Description).ToList());
+            return Ok(targets.OrderBy(x => x.Description).ToList());
         }
 
         [HttpGet("getimage/{fileId}")]
-        public async Task<IActionResult> GetImage(Guid fileId)
+        public IActionResult GetImage(Guid fileId)
         {
-            await Task.Delay(1);
 
             var target = targets.Where(x => x.Id == fileId).FirstOrDefault();
             if (target == null) return BadRequest("image not available");
@@ -79,8 +78,32 @@ namespace WebApplication.server.controllers.API
             FileStream stream = new FileStream(filePath, FileMode.Open);
 
             return new FileStreamResult(stream, "image/jpg");
-            //return Ok();
         }
+
+        [HttpGet("distances")]
+        public IActionResult GetDistances()
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "server", "statics", "distances.json");
+            var json = string.Empty;
+            using (var file = System.IO.File.Open(filePath, System.IO.FileMode.Open))
+            using (var reader = new StreamReader(file))
+            {
+                json = reader.ReadToEnd();
+            }
+
+            var result = JsonConvert.DeserializeObject<List<DistanceModel>>(json);
+            return Ok(result);
+        }
+
+    }
+
+    public class DistanceModel
+    {
+        public int FigureGroup { get; set; }
+        public int A { get; set; }
+        public int R { get; set; }
+        public int B { get; set; }
+        public int C { get; set; }
 
     }
 
@@ -96,10 +119,10 @@ namespace WebApplication.server.controllers.API
 
         public string Description { get; set; }
         public string ImagePath { get; set; }
-        
+
 
     }
 
-    
+
 
 }

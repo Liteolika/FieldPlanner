@@ -31,9 +31,9 @@
             </div>
             <div class="col-sm-3">
                 Stödhand:
-                <select class="form-control">
-                    <option value="true">Ja</option>
+                <select ng-model="station.hasSupportHand" class="form-control">
                     <option value="false">Nej</option>
+                    <option value="true">Ja</option>
                 </select>
             </div>
         </div>
@@ -46,7 +46,7 @@
                 <h5>
                     Målgrupp {{targetGroup.name}}
                     <span class="btn-group pull-right">
-                        <button ng-click="station.removeTargetGroup(targetGroup)" class="btn btn-sm btn-block btn-danger">
+                        <button ng-click="vm.removeTargetGroup(station, targetGroup)" class="btn btn-sm btn-block btn-danger">
                             <i class="fa fa-remove"></i> Ta bort
                         </button>
                     </span>
@@ -54,35 +54,62 @@
             </div>
             <div class="panel-body">
 
+                <div class="row">
+                    <div class="col-sm-12">
+                        Max avstånd
+                    </div>
+                    <div class="col-sm-3">A: {{targetGroup.maxDistance.a}}</div>
+                    <div class="col-sm-3">R: {{targetGroup.maxDistance.r}}</div>
+                    <div class="col-sm-3">B: {{targetGroup.maxDistance.b}}</div>
+                    <div class="col-sm-3">C: {{targetGroup.maxDistance.c}}</div>
+
+                </div>
+
                 <table class="table table-condensed table-striped table-bordered">
                     <tbody>
-                        <tr ng-repeat="target in targetGroup.targets">
-                            <td>Figurtyp</td>
-                            <td>
-                                {{target.figure.description}}
-                                <img ng-src="api/target/getimage/{{target.figure.id}}" width="60" />
 
-                                <div class="dropdown">
-                                    <button class="btn btn-default btn-lg btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <tr ng-repeat="target in targetGroup.targets">
+
+                            <td>
+
+                                <div class="row">
+                                    <div class="col-sm-3">
                                         {{target.figure.description}}
-                                        <!--<span class="caret"></span>-->
-                                        <img ng-src="api/target/getimage/{{target.figure.id}}" width="24" />
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li ng-repeat="figure in vm.figures">
-                                            <a href="" ng-click="target.setFigure(figure)">
-                                                <img ng-src="api/target/getimage/{{figure.id}}" width="17" />{{figure.description}}
-                                            </a>
-                                        </li>
-                                    </ul>
+                                        <img ng-src="api/target/getimage/{{target.figure.id}}" width="60" />
+                                        <div class="dropdown">
+                                            <button class="btn btn-default btn-lg btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                {{target.figure.description}}
+                                                <!--<span class="caret"></span>-->
+                                                <img ng-src="api/target/getimage/{{target.figure.id}}" width="24" />
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li ng-repeat="figure in vm.figures">
+                                                    <a href="" ng-click="vm.setFigure(station, targetGroup, target, figure)">
+                                                        <img ng-src="api/target/getimage/{{figure.id}}" width="17" />{{figure.description}}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="col-sm-3">
+                                            Max avstånd:<br />
+                                            A: {{ vm.getMaxDistance("A", target.figure.figureGroup)}}<br />
+                                            R: {{ vm.getMaxDistance("R", target.figure.figureGroup)}}<br />
+                                            B: {{ vm.getMaxDistance("B", target.figure.figureGroup)}}<br />
+                                            C: {{ vm.getMaxDistance("C", target.figure.figureGroup)}}<br />
+                                        </div>
+                                    </div>
                                 </div>
+
                             </td>
+
                         </tr>
                     </tbody>
                 </table>
 
                 <div class="col-sm-2">
-                    <button class="btn btn-default btn-sm btn-block" ng-click="targetGroup.addTarget()">Lägg till figur</button>
+                    <button class="btn btn-default btn-sm btn-block" ng-click="vm.addTarget(targetGroup)">Lägg till figur</button>
                 </div>
 
             </div>
@@ -90,7 +117,7 @@
         </div>
 
         <div class="col-sm-3">
-            <button ng-show="station.targetGroups.length < 6" ng-click="station.addTargetGroup()" class="btn btn-default btn-sm btn-block">Lägg till målgrupp</button>
+            <button ng-show="station.targetGroups.length < 6" ng-click="vm.addTargetGroup(station)" class="btn btn-default btn-sm btn-block">Lägg till målgrupp</button>
         </div>
         
     </div>

@@ -102,6 +102,15 @@ gulp.task("build-inject", () => {
                     }
                 }))
 
+        //.pipe(inject(gulp.src(['wwwroot/templates/tpl.*.html']), {
+        //    starttag: '<!-- inject:templates -->',
+        //    addRootSlash: false,
+        //    transform: (filePath, file, i, length) => {
+        //        filePath = filePath + "?c=" + rnd();
+        //        return "<ng-include src=" + '"' + "'" + filePath.replace('wwwroot/', '') + "'" + '"></ng-include>';
+        //    }
+        //}))
+
 
 
 //.pipe(inject(
