@@ -10,41 +10,50 @@
 
 <hr />
 
-<div ng-repeat="station in vm.stations" class="panel panel-default">
+<div ng-repeat="station in vm.stations" class="panel panel-primary">
     <div class="panel-heading">
         <h4>Station {{station.number}}</h4>
     </div>
     <div class="panel-body">
 
-        <table>
-            <tbody>
-                <tr>
-                    <td>Skjutställning</td>
-                    <td>
-                        <select>
-                            <option ng-repeat="stance in vm.stances">{{stance}}</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Stödhand</td>
-                    <td>
-                        <select>
-                            <option value="true">Ja</option>
-                            <option value="false">Nej</option>
-                        </select>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-sm-3">
+                Plats för stationen: <input type="text" class="form-control" />
+            </div>
+        </div>
 
-        <div class="panel panel-default" ng-repeat="targetGroup in station.targetGroups">
+        <div class="row">
+            <div class="col-sm-3">
+                Skjutställning: 
+                <select class="form-control">
+                    <option ng-repeat="stance in vm.stances">{{stance}}</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                Stödhand:
+                <select class="form-control">
+                    <option value="true">Ja</option>
+                    <option value="false">Nej</option>
+                </select>
+            </div>
+        </div>
+
+        <hr />
+        
+        <div class="panel panel-warning" ng-repeat="targetGroup in station.targetGroups">
 
             <div class="panel-heading">
-                <h5>Målgrupp {{targetGroup.name}}</h5>
+                <h5>
+                    Målgrupp {{targetGroup.name}}
+                    <span class="btn-group pull-right">
+                        <button ng-click="station.removeTargetGroup(targetGroup)" class="btn btn-sm btn-block btn-danger">
+                            <i class="fa fa-remove"></i> Ta bort
+                        </button>
+                    </span>
+                </h5>
             </div>
             <div class="panel-body">
-                <button ng-click="targetGroup.addTarget()">Lägg till figur</button>
+
                 <table class="table table-condensed table-striped table-bordered">
                     <tbody>
                         <tr ng-repeat="target in targetGroup.targets">
@@ -72,11 +81,20 @@
                     </tbody>
                 </table>
 
+                <div class="col-sm-2">
+                    <button class="btn btn-default btn-sm btn-block" ng-click="targetGroup.addTarget()">Lägg till figur</button>
+                </div>
+
             </div>
 
         </div>
-        <button ng-show="station.targetGroups.length < 6" ng-click="station.addTargetGroup()" class="btn btn-default btn-sm btn-block">Lägg till målgrupp</button>
+
+        <div class="col-sm-3">
+            <button ng-show="station.targetGroups.length < 6" ng-click="station.addTargetGroup()" class="btn btn-default btn-sm btn-block">Lägg till målgrupp</button>
+        </div>
+        
     </div>
+
 </div>
 
 

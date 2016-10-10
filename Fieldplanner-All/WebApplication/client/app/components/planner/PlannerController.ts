@@ -21,7 +21,10 @@
             });
         }
 
-        constructor(private dataService: app.core.IDataService) {
+        constructor(
+            private dataService: app.core.IDataService,
+            private notificationService: app.core.INotificationService
+        ) {
             this.getTargets();
             for (var member in Stance) {
                 if (typeof Stance[member] === "number") {
@@ -66,7 +69,37 @@
             }
         }
 
+        public removeTargetGroup(targetGroup: TargetGroup) {
+
+            var idx: number = null;
+            for (var i = 0; i < this.targetGroups.length; i++) {
+                if (this.targetGroups[i].name == targetGroup.name) {
+                    idx = i;
+                }
+            }
+            if (idx != null) {
+                this.targetGroups.splice(idx, 1);
+                this.renameTargetGroups();
+            }
+        }
+
+        private renameTargetGroups(): void {
+            for (var i = 0; i < this.targetGroups.length; i++) {
+                if (i == 0) {
+                    this.targetGroups[i].name = "A";
+                } else {
+                    this.targetGroups[i].name = Station.getLetter(this.targetGroups[i - 1].name);
+                }
+                                
+            }
+        }
+
+        public static factory(): Station {
+            return new Station();
+        }
+
         public static getLetter(lastLetter: string): string {
+            if (lastLetter == "") return "A";
             if (lastLetter.toUpperCase() == "A") return "B";
             if (lastLetter.toUpperCase() == "B") return "C";
             if (lastLetter.toUpperCase() == "C") return "D";

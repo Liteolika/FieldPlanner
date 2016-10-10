@@ -43,7 +43,8 @@ gulp.task("build", (cb) => {
         "build-fonts",
         "build-images",
         "build-less",
-        "build-views"
+        "build-views",
+        "build-templates"
     ], "build-inject", cb);
 });
 
@@ -175,6 +176,12 @@ gulp.task('build-views', () => {
     return gulp.src([
         './client/app/**/*.html'
     ]).pipe(flatten()).pipe(gulp.dest('./wwwroot/views'));
+});
+
+gulp.task('build-templates', () => {
+    return gulp.src([
+        './client/app/**/tpl.*.html'
+    ]).pipe(flatten()).pipe(gulp.dest('./wwwroot/templates'));
 });
 
 gulp.task('build-fonts', () => {

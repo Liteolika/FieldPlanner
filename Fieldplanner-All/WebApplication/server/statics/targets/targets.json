@@ -1,0 +1,40 @@
+[
+  {
+    "id": "2E1403EE-FE33-4CE6-BC4D-3FB85E25AC03",
+    "supplier": "GESAB",
+    "article": "156223",
+    "description": "1/3 papp",
+    "color": "Orange",
+    "size": "52x48",
+    "figureGroup": "4",
+    "figureShift": "0"
+  },
+  {
+    "id": "C6091161-2E6B-40B2-82FB-676B6D9BF56A",
+    "supplier": "GESAB",
+    "article": "40416",
+    "description": "Flaskmål",
+    "color": "Gul",
+    "size": "14x39",
+    "figureGroup": "4",
+    "figureShift": "1"
+  },
+  {
+    "id": "4DCAA373-D285-4875-B92A-C53C1CD74DCF",
+    "supplier": "GESAB",
+    "article": "156104",
+    "description": "C20 Papp",
+    "color": "Grön",
+    "size": "20x18 ",
+    "figureGroup": "10"
+  },
+  {
+    "id": "8FE8820F-3ACE-4496-9BF9-2AC0F214CBEF",
+    "supplier": "GESAB",
+    "article": "46510",
+    "description": "H-J B-Rondell 1",
+    "color": "Röd",
+    "size": "12",
+    "figureGroup": "13"
+  }
+]

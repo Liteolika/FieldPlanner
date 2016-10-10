@@ -62,7 +62,31 @@ var app;
                         this.targetGroups.push(new TargetGroup("A"));
                     }
                 };
+                Station.prototype.removeTargetGroup = function (targetGroup) {
+                    var idx = null;
+                    for (var i = 0; i < this.targetGroups.length; i++) {
+                        if (this.targetGroups[i].name == targetGroup.name) {
+                            idx = i;
+                        }
+                    }
+                    if (idx != null) {
+                        this.targetGroups.splice(idx, 1);
+                        this.renameTargetGroups();
+                    }
+                };
+                Station.prototype.renameTargetGroups = function () {
+                    for (var i = 0; i < this.targetGroups.length; i++) {
+                        if (i == 0) {
+                            this.targetGroups[i].name = "A";
+                        }
+                        else {
+                            this.targetGroups[i].name = Station.getLetter(this.targetGroups[i - 1].name);
+                        }
+                    }
+                };
                 Station.getLetter = function (lastLetter) {
+                    if (lastLetter == "")
+                        return "A";
                     if (lastLetter.toUpperCase() == "A")
                         return "B";
                     if (lastLetter.toUpperCase() == "B")
