@@ -5,7 +5,7 @@
     export class PlannerController {
 
         public stations: Array<Station> = new Array<Station>();
-        public figures: Array<TargetModelDto> = new Array<TargetModelDto>();
+        public figures: Array<FigureModelDto> = new Array<FigureModelDto>();
         public stances: Array<string> = new Array<string>();
         public stance: Stance = null;
         public distances: Array<DistanceModel> = new Array<DistanceModel>();
@@ -88,7 +88,71 @@
             }
         }
 
-        private calculateMaxDistance(station: Station, targetGroup: TargetGroup) {
+        public setFigure(station: Station, targetGroup: TargetGroup, target: Target, figure: FigureModelDto): void {
+            target.figure = figure;
+            //this.calculateMaxDistance(station, targetGroup);
+        }
+
+        public getTargetMaxDistance(station: Station, target: Target, weaponGroup: string): string {
+
+            if (target.figure == null) {
+                return "N/A";
+            }
+
+            var figureGroup: number = target.figure.figureGroup;
+            var maxDistance: string = "";
+            if (figureGroup > 1) {
+                if (station.hasSupportHand) {
+                    figureGroup--;
+                }
+            }
+
+            this.distances.forEach((d) => {
+                if (d.figureGroup == figureGroup) {
+                    maxDistance = d[weaponGroup];
+                }
+            }, this);
+
+            return maxDistance;
+
+        }
+
+        public getTargetGroupMaxDistance(station: Station, targetGroup: TargetGroup, weaponGroup: string): string {
+            var maxFigureGroup: number = 0;
+            var maxDistance = "N/A";
+
+            if (targetGroup.targets.length < 1) {
+                return maxDistance;
+            }
+
+            targetGroup.targets.forEach((t) => {
+                if (t.figure != null) {
+                    if (t.figure.figureGroup > maxFigureGroup) {
+                        maxFigureGroup = t.figure.figureGroup;
+                    }    
+                }
+                
+            });
+
+            if (maxFigureGroup > 1) {
+                if (station.hasSupportHand) {
+                    maxFigureGroup--;
+                }
+            }
+
+            this.distances.forEach((d) => {
+                if (d.figureGroup == maxFigureGroup) {
+                    maxDistance = d[weaponGroup];
+                }
+            }, this);
+
+            return maxDistance;
+
+        }
+
+        
+
+        private calculateTargetGroupMaxDistance(station: Station, targetGroup: TargetGroup) {
 
             console.log("calculating max distance for targetgroup: " + targetGroup.name);
             var maxFigureGroup: number = 0;
@@ -102,23 +166,22 @@
                 }
             }, this);
 
+            this.distances.forEach((d) => {
+                if (d.figureGroup == maxFigureGroup) {
+                    targetGroup.maxDistance = d;
+                }
+            }, this);
+
+
             if (station.hasSupportHand) {
                 if (maxFigureGroup > 1) {
                     maxFigureGroup--;
                 }
             }
 
-            this.distances.forEach((d) => {
-                if (d.figureGroup == maxFigureGroup) {
-                    targetGroup.maxDistance = d;
-                }
-            }, this);
         }
 
-        public setFigure(station: Station, targetGroup: TargetGroup, target: Target, figure: TargetModelDto): void {
-            target.figure = figure;
-            this.calculateMaxDistance(station, targetGroup);
-        }
+
 
         public getMaxDistance(weapongroup: string, figureGroup: number): string {
             if (figureGroup == null) return "N/A";
@@ -131,7 +194,7 @@
         }
 
         private getTargets(): void {
-            this.dataService.get("api/target").then((response: Array<TargetModelDto>) => {
+            this.dataService.get("api/target").then((response: Array<FigureModelDto>) => {
                 this.figures = response;
             });
         }
@@ -187,7 +250,7 @@
         public targetGroups: Array<TargetGroup> = new Array<TargetGroup>();
         public hasSupportHand: boolean = false;
         public stance: Stance = Stance.Stående;
-        
+
     }
 
     export class TargetGroup {
@@ -206,11 +269,11 @@
 
     export class Target {
         public name: string;
-        public figure: TargetModelDto;
+        public figure: FigureModelDto;
 
     }
 
-    export class TargetModelDto {
+    export class FigureModelDto {
         public id: string;
         public description: string;
         public imagePath: string;
@@ -222,15 +285,15 @@
         public figureShift: number;
     }
 
-        //    public Guid Id { get; set; }
-        //public string Supplier { get; set; }
-        //public string Article { get; set; }
-        //public string Color { get; set; }
-        //public string Size { get; set; }
-        //public int FigureGroup { get; set; }
-        //public int FigureShift { get; set; }
+    //    public Guid Id { get; set; }
+    //public string Supplier { get; set; }
+    //public string Article { get; set; }
+    //public string Color { get; set; }
+    //public string Size { get; set; }
+    //public int FigureGroup { get; set; }
+    //public int FigureShift { get; set; }
 
-        //public string Description { get; set; }
-        //public string ImagePath { get; set; }
+    //public string Description { get; set; }
+    //public string ImagePath { get; set; }
 
 }

@@ -14,6 +14,7 @@ var app;
                     this.stances = new Array();
                     this.stance = null;
                     this.distances = new Array();
+                    this.getDistances();
                     this.getTargets();
                     for (var member in Stance) {
                         if (typeof Stance[member] === "number") {
@@ -95,13 +96,39 @@ var app;
                         }
                     }
                 };
+                PlannerController.prototype.calculateMaxDistance = function (station, targetGroup) {
+                    console.log("calculating max distance for targetgroup: " + targetGroup.name);
+                    var maxFigureGroup = 0;
+                    targetGroup.targets.forEach(function (t) {
+                        console.log(t.figure.description);
+                        console.log(maxFigureGroup);
+                        if (t.figure.figureGroup > maxFigureGroup) {
+                            console.log("found higher figuregroup: " + maxFigureGroup);
+                            maxFigureGroup = t.figure.figureGroup;
+                        }
+                    }, this);
+                    if (station.hasSupportHand) {
+                        if (maxFigureGroup > 1) {
+                            maxFigureGroup--;
+                        }
+                    }
+                    this.distances.forEach(function (d) {
+                        if (d.figureGroup == maxFigureGroup) {
+                            targetGroup.maxDistance = d;
+                        }
+                    }, this);
+                };
+                PlannerController.prototype.setFigure = function (station, targetGroup, target, figure) {
+                    target.figure = figure;
+                    this.calculateMaxDistance(station, targetGroup);
+                };
                 PlannerController.prototype.getMaxDistance = function (weapongroup, figureGroup) {
                     if (figureGroup == null)
                         return "N/A";
                     for (var i = 0; i < this.distances.length; i++) {
                         if (this.distances[i].figureGroup == figureGroup) {
-                            var g = this.distances[i];
-                            return g[weapongroup];
+                            var fg = this.distances[i];
+                            return fg[weapongroup.toLowerCase()];
                         }
                     }
                 };
@@ -157,9 +184,6 @@ var app;
             var Target = (function () {
                 function Target() {
                 }
-                Target.prototype.setFigure = function (figure) {
-                    this.figure = figure;
-                };
                 return Target;
             }());
             planner.Target = Target;

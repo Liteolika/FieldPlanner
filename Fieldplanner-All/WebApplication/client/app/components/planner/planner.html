@@ -31,9 +31,7 @@
             </div>
             <div class="col-sm-3">
                 Stödhand:
-                <select ng-model="station.hasSupportHand" class="form-control">
-                    <option value="false">Nej</option>
-                    <option value="true">Ja</option>
+                <select ng-model="station.hasSupportHand" ng-options="o.v as o.n for o in [{ n: 'Nej', v: false }, { n: 'Ja', v: true }]" class="form-control">
                 </select>
             </div>
         </div>
@@ -55,13 +53,15 @@
             <div class="panel-body">
 
                 <div class="row">
-                    <div class="col-sm-12">
-                        Max avstånd
+                    <div class="col-sm-2 well well-sm">
+                        <div class="col-sm-12">Max avstånd</div>
+                        <div class="col-sm-12">A: {{vm.getTargetGroupMaxDistance(station, targetGroup, "a")}}</div>
+                        <div class="col-sm-12">R: {{vm.getTargetGroupMaxDistance(station, targetGroup, "r")}}</div>
+                        <div class="col-sm-12">B: {{vm.getTargetGroupMaxDistance(station, targetGroup, "b")}}</div>
+                        <div class="col-sm-12">C: {{vm.getTargetGroupMaxDistance(station, targetGroup, "c")}}</div>
+
                     </div>
-                    <div class="col-sm-3">A: {{targetGroup.maxDistance.a}}</div>
-                    <div class="col-sm-3">R: {{targetGroup.maxDistance.r}}</div>
-                    <div class="col-sm-3">B: {{targetGroup.maxDistance.b}}</div>
-                    <div class="col-sm-3">C: {{targetGroup.maxDistance.c}}</div>
+                    
 
                 </div>
 
@@ -94,10 +94,10 @@
                                     <div class="col-sm-9">
                                         <div class="col-sm-3">
                                             Max avstånd:<br />
-                                            A: {{ vm.getMaxDistance("A", target.figure.figureGroup)}}<br />
-                                            R: {{ vm.getMaxDistance("R", target.figure.figureGroup)}}<br />
-                                            B: {{ vm.getMaxDistance("B", target.figure.figureGroup)}}<br />
-                                            C: {{ vm.getMaxDistance("C", target.figure.figureGroup)}}<br />
+                                            A: {{vm.getTargetMaxDistance(station, target, "a")}}<br />
+                                            R: {{vm.getTargetMaxDistance(station, target, "r")}}<br />
+                                            B: {{vm.getTargetMaxDistance(station, target, "b")}}<br />
+                                            C: {{vm.getTargetMaxDistance(station, target, "c")}}<br />
                                         </div>
                                     </div>
                                 </div>

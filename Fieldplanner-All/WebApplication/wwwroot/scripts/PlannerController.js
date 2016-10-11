@@ -96,7 +96,54 @@ var app;
                         }
                     }
                 };
-                PlannerController.prototype.calculateMaxDistance = function (station, targetGroup) {
+                PlannerController.prototype.setFigure = function (station, targetGroup, target, figure) {
+                    target.figure = figure;
+                    //this.calculateMaxDistance(station, targetGroup);
+                };
+                PlannerController.prototype.getTargetMaxDistance = function (station, target, weaponGroup) {
+                    if (target.figure == null) {
+                        return "N/A";
+                    }
+                    var figureGroup = target.figure.figureGroup;
+                    var maxDistance = "";
+                    if (figureGroup > 1) {
+                        if (station.hasSupportHand) {
+                            figureGroup--;
+                        }
+                    }
+                    this.distances.forEach(function (d) {
+                        if (d.figureGroup == figureGroup) {
+                            maxDistance = d[weaponGroup];
+                        }
+                    }, this);
+                    return maxDistance;
+                };
+                PlannerController.prototype.getTargetGroupMaxDistance = function (station, targetGroup, weaponGroup) {
+                    var maxFigureGroup = 0;
+                    var maxDistance = "N/A";
+                    if (targetGroup.targets.length < 1) {
+                        return maxDistance;
+                    }
+                    targetGroup.targets.forEach(function (t) {
+                        if (t.figure != null) {
+                            if (t.figure.figureGroup > maxFigureGroup) {
+                                maxFigureGroup = t.figure.figureGroup;
+                            }
+                        }
+                    });
+                    if (maxFigureGroup > 1) {
+                        if (station.hasSupportHand) {
+                            maxFigureGroup--;
+                        }
+                    }
+                    this.distances.forEach(function (d) {
+                        if (d.figureGroup == maxFigureGroup) {
+                            maxDistance = d[weaponGroup];
+                        }
+                    }, this);
+                    return maxDistance;
+                };
+                PlannerController.prototype.calculateTargetGroupMaxDistance = function (station, targetGroup) {
                     console.log("calculating max distance for targetgroup: " + targetGroup.name);
                     var maxFigureGroup = 0;
                     targetGroup.targets.forEach(function (t) {
@@ -107,20 +154,16 @@ var app;
                             maxFigureGroup = t.figure.figureGroup;
                         }
                     }, this);
-                    if (station.hasSupportHand) {
-                        if (maxFigureGroup > 1) {
-                            maxFigureGroup--;
-                        }
-                    }
                     this.distances.forEach(function (d) {
                         if (d.figureGroup == maxFigureGroup) {
                             targetGroup.maxDistance = d;
                         }
                     }, this);
-                };
-                PlannerController.prototype.setFigure = function (station, targetGroup, target, figure) {
-                    target.figure = figure;
-                    this.calculateMaxDistance(station, targetGroup);
+                    if (station.hasSupportHand) {
+                        if (maxFigureGroup > 1) {
+                            maxFigureGroup--;
+                        }
+                    }
                 };
                 PlannerController.prototype.getMaxDistance = function (weapongroup, figureGroup) {
                     if (figureGroup == null)
@@ -187,12 +230,12 @@ var app;
                 return Target;
             }());
             planner.Target = Target;
-            var TargetModelDto = (function () {
-                function TargetModelDto() {
+            var FigureModelDto = (function () {
+                function FigureModelDto() {
                 }
-                return TargetModelDto;
+                return FigureModelDto;
             }());
-            planner.TargetModelDto = TargetModelDto;
+            planner.FigureModelDto = FigureModelDto;
         })(planner = components.planner || (components.planner = {}));
     })(components = app.components || (app.components = {}));
 })(app || (app = {}));
