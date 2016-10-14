@@ -6,11 +6,132 @@
         <button ng-click="vm.addStation()" class="btn btn-default btn-block">Lägg till station</button>
     </div>
 
+    <!--<div class="col-sm-4 bg-info">
+
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Välj
+            </button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="figure in vm.figures">
+                    <a href="" ng-click="vm.test = figure">
+                        <img ng-src="api/target/getimage/{{figure.id}}" width="17" />{{figure.description}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>-->
+
 </div>
+
+
 
 <hr />
 
-<div ng-repeat="station in vm.stations" class="panel panel-primary">
+<div ng-repeat="station in vm.stations">
+
+    <h2>Station {{station.number}}</h2>
+
+    <select ng-model="station.hasSupportHand" ng-options="o.v as o.n for o in [{ n: 'Nej', v: false }, { n: 'Ja', v: true }]" class="form-control"></select>
+    <select class="form-control">
+        <option ng-repeat="stance in vm.stances">{{stance}}</option>
+    </select>
+
+    <button ng-show="station.targetGroups.length < 6" ng-click="vm.addTargetGroup(station)" class="btn btn-default btn-sm btn-block">Lägg till målgrupp</button>
+
+    <div class="col-sm-6" ng-repeat="targetGroup in station.targetGroups">
+        <h3>Målgrupp {{targetGroup.name}}</h3>
+
+
+        <table class="table table-responsive table-striped">
+
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>VGR A</th>
+                    <th>VGR R</th>
+                    <th>VGR B</th>
+                    <th>VGR C</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Eget avstånd</td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="targetGroup.ownDistanceA" />
+                        <span class="label label-danger" ng-show="targetGroup.ownDistanceA > vm.getTargetGroupMaxDistance(station, targetGroup, 'a')">
+                            För långt
+                        </span>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="targetGroup.ownDistanceR" />
+                        <span class="label label-danger" ng-show="targetGroup.ownDistanceR > vm.getTargetGroupMaxDistance(station, targetGroup, 'r')">
+                            För långt
+                        </span>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="targetGroup.ownDistanceB" />
+                        <span class="label label-danger" ng-show="targetGroup.ownDistanceB > vm.getTargetGroupMaxDistance(station, targetGroup, 'b')">
+                            För långt
+                        </span>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="targetGroup.ownDistanceC" />
+                        <span class="label label-danger" ng-show="targetGroup.ownDistanceC > vm.getTargetGroupMaxDistance(station, targetGroup, 'c')">
+                            För långt
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Max avstånd</td>
+                    <td>{{vm.getTargetGroupMaxDistance(station, targetGroup, "a")}}</td>
+                    <td>{{vm.getTargetGroupMaxDistance(station, targetGroup, "r")}}</td>
+                    <td>{{vm.getTargetGroupMaxDistance(station, targetGroup, "b")}}</td>
+                    <td>{{vm.getTargetGroupMaxDistance(station, targetGroup, "c")}}</td>
+                </tr>
+                <tr class="info">
+                    <td colspan="5"><h4>Figurer</h4></td>
+                </tr>
+                <tr ng-repeat="target in targetGroup.targets">
+                    <td>
+                        <div class="col-sm-6">
+                            <img ng-src="api/target/getimage/{{target.figure.id}}" width="24" />
+                            {{target.figure.description}}
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Välj
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li ng-repeat="figure in vm.figures">
+                                        <a href="" ng-click="vm.setFigure(station, targetGroup, target, figure)">
+                                            <img ng-src="api/target/getimage/{{figure.id}}" width="17" />{{figure.description}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    </td>
+                    <td>{{vm.getTargetMaxDistance(station, target, "a")}}</td>
+                    <td>{{vm.getTargetMaxDistance(station, target, "r")}}</td>
+                    <td>{{vm.getTargetMaxDistance(station, target, "b")}}</td>
+                    <td>{{vm.getTargetMaxDistance(station, target, "c")}}</td>
+                </tr>
+            </tbody>
+
+        </table>
+        <button class="btn btn-default btn-sm btn-block" ng-click="vm.addTarget(targetGroup)">Lägg till figur</button>
+
+    </div>
+
+</div>
+
+<!--<div ng-repeat="station in vm.stations" class="panel panel-primary">
     <div class="panel-heading">
         <h4>Station {{station.number}}</h4>
     </div>
@@ -24,104 +145,107 @@
 
         <div class="row">
             <div class="col-sm-3">
-                Skjutställning: 
+                Skjutställning:
                 <select class="form-control">
                     <option ng-repeat="stance in vm.stances">{{stance}}</option>
                 </select>
             </div>
             <div class="col-sm-3">
                 Stödhand:
-                <select ng-model="station.hasSupportHand" ng-options="o.v as o.n for o in [{ n: 'Nej', v: false }, { n: 'Ja', v: true }]" class="form-control">
-                </select>
+                <select ng-model="station.hasSupportHand" ng-options="o.v as o.n for o in [{ n: 'Nej', v: false }, { n: 'Ja', v: true }]" class="form-control"></select>
             </div>
         </div>
 
         <hr />
-        
-        <div class="panel panel-warning" ng-repeat="targetGroup in station.targetGroups">
 
-            <div class="panel-heading">
-                <h5>
-                    Målgrupp {{targetGroup.name}}
-                    <span class="btn-group pull-right">
-                        <button ng-click="vm.removeTargetGroup(station, targetGroup)" class="btn btn-sm btn-block btn-danger">
-                            <i class="fa fa-remove"></i> Ta bort
-                        </button>
-                    </span>
-                </h5>
-            </div>
-            <div class="panel-body">
+        <div ng-repeat="targetGroup in station.targetGroups">
 
-                <div class="row">
-                    <div class="col-sm-2 well well-sm">
-                        <div class="col-sm-12">Max avstånd</div>
-                        <div class="col-sm-12">A: {{vm.getTargetGroupMaxDistance(station, targetGroup, "a")}}</div>
-                        <div class="col-sm-12">R: {{vm.getTargetGroupMaxDistance(station, targetGroup, "r")}}</div>
-                        <div class="col-sm-12">B: {{vm.getTargetGroupMaxDistance(station, targetGroup, "b")}}</div>
-                        <div class="col-sm-12">C: {{vm.getTargetGroupMaxDistance(station, targetGroup, "c")}}</div>
+            <input type="text" ng-model="targetGroup.ownDistance" />
+            <span class="has-error" ng-show='targetGroup.ownDistance > vm.getTargetGroupMaxDistance(station, targetGroup, "a")'>För långt</span>
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <h5>
+                        Målgrupp {{targetGroup.name}}
+                        <span class="btn-group pull-right">
+                            <button ng-click="vm.removeTargetGroup(station, targetGroup)" class="btn btn-sm btn-block btn-danger">
+                                <i class="fa fa-remove"></i> Ta bort
+                            </button>
+                        </span>
+                    </h5>
+                </div>
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-sm-2 well well-sm">
+                            <div class="col-sm-12">Max avstånd</div>
+                            <div class="col-sm-12">A: {{vm.getTargetGroupMaxDistance(station, targetGroup, "a")}}</div>
+                            <div class="col-sm-12">R: {{vm.getTargetGroupMaxDistance(station, targetGroup, "r")}}</div>
+                            <div class="col-sm-12">B: {{vm.getTargetGroupMaxDistance(station, targetGroup, "b")}}</div>
+                            <div class="col-sm-12">C: {{vm.getTargetGroupMaxDistance(station, targetGroup, "c")}}</div>
+
+                        </div>
+
 
                     </div>
-                    
 
-                </div>
+                    <table class="table table-condensed table-striped table-bordered">
+                        <tbody>
 
-                <table class="table table-condensed table-striped table-bordered">
-                    <tbody>
+                            <tr ng-repeat="target in targetGroup.targets">
 
-                        <tr ng-repeat="target in targetGroup.targets">
+                                <td>
 
-                            <td>
-
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        {{target.figure.description}}
-                                        <img ng-src="api/target/getimage/{{target.figure.id}}" width="60" />
-                                        <div class="dropdown">
-                                            <button class="btn btn-default btn-lg btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                {{target.figure.description}}
-                                                <!--<span class="caret"></span>-->
-                                                <img ng-src="api/target/getimage/{{target.figure.id}}" width="24" />
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li ng-repeat="figure in vm.figures">
-                                                    <a href="" ng-click="vm.setFigure(station, targetGroup, target, figure)">
-                                                        <img ng-src="api/target/getimage/{{figure.id}}" width="17" />{{figure.description}}
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-9">
+                                    <div class="row">
                                         <div class="col-sm-3">
-                                            Max avstånd:<br />
-                                            A: {{vm.getTargetMaxDistance(station, target, "a")}}<br />
-                                            R: {{vm.getTargetMaxDistance(station, target, "r")}}<br />
-                                            B: {{vm.getTargetMaxDistance(station, target, "b")}}<br />
-                                            C: {{vm.getTargetMaxDistance(station, target, "c")}}<br />
+                                            {{target.figure.description}}
+                                            <img ng-src="api/target/getimage/{{target.figure.id}}" width="60" />
+                                            <div class="dropdown">
+                                                <button class="btn btn-default btn-lg btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    {{target.figure.description}}
+                                                    <img ng-src="api/target/getimage/{{target.figure.id}}" width="24" />
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li ng-repeat="figure in vm.figures">
+                                                        <a href="" ng-click="vm.setFigure(station, targetGroup, target, figure)">
+                                                            <img ng-src="api/target/getimage/{{figure.id}}" width="17" />{{figure.description}}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <div class="col-sm-3">
+                                                Max avstånd:<br />
+                                                A: {{vm.getTargetMaxDistance(station, target, "a")}}<br />
+                                                R: {{vm.getTargetMaxDistance(station, target, "r")}}<br />
+                                                B: {{vm.getTargetMaxDistance(station, target, "b")}}<br />
+                                                C: {{vm.getTargetMaxDistance(station, target, "c")}}<br />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                            </td>
+                                </td>
 
-                        </tr>
-                    </tbody>
-                </table>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <div class="col-sm-2">
-                    <button class="btn btn-default btn-sm btn-block" ng-click="vm.addTarget(targetGroup)">Lägg till figur</button>
+                    <div class="col-sm-2">
+                        <button class="btn btn-default btn-sm btn-block" ng-click="vm.addTarget(targetGroup)">Lägg till figur</button>
+                    </div>
+
                 </div>
 
             </div>
-
         </div>
+
 
         <div class="col-sm-3">
             <button ng-show="station.targetGroups.length < 6" ng-click="vm.addTargetGroup(station)" class="btn btn-default btn-sm btn-block">Lägg till målgrupp</button>
         </div>
-        
+
     </div>
 
-</div>
-
-
+</div>-->

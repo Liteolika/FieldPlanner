@@ -11,22 +11,25 @@ namespace WebApplication.server.controllers.API
     public class TargetController : BaseApiController
     {
 
-        public static List<FigureModel> targets = new List<FigureModel>();
+        public static object _locker = new object();
+        public static List<FigureModel> _targets = new List<FigureModel>();
 
         public TargetController()
         {
-            if (targets.Count < 1)
+            if (_targets.Count < 1)
             {
-                var json = string.Empty;
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "server", "statics", "targets", "targets.json");
-                using (var file = System.IO.File.Open(filePath, System.IO.FileMode.Open))
-                using (var reader = new StreamReader(file))
+                lock (_locker)
                 {
-                    json = reader.ReadToEnd();
+                    var json = string.Empty;
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "server", "statics", "targets", "targets.json");
+                    using (var file = System.IO.File.Open(filePath, System.IO.FileMode.Open))
+                    using (var reader = new StreamReader(file))
+                    {
+                        json = reader.ReadToEnd();
+                    }
+
+                    _targets = JsonConvert.DeserializeObject<List<FigureModel>>(json);
                 }
-
-                targets = JsonConvert.DeserializeObject<List<FigureModel>>(json);
-
 
                 //var fileContent = string.Empty;
                 //var filePath = Startup.Configuration["AppSettings:ImageRepositoryPath"];
@@ -63,14 +66,14 @@ namespace WebApplication.server.controllers.API
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(targets.OrderBy(x => x.Description).ToList());
+            return Ok(_targets.OrderBy(x => x.Description).ToList());
         }
 
         [HttpGet("getimage/{fileId}")]
         public IActionResult GetImage(Guid fileId)
         {
 
-            var target = targets.Where(x => x.Id == fileId).FirstOrDefault();
+            var target = _targets.Where(x => x.Id == fileId).FirstOrDefault();
             if (target == null) return BadRequest("image not available");
 
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "server", "statics", "targets", target.Article + ".jpg");

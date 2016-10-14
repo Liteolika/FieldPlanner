@@ -250,14 +250,20 @@
         public targetGroups: Array<TargetGroup> = new Array<TargetGroup>();
         public hasSupportHand: boolean = false;
         public stance: Stance = Stance.Stående;
-
     }
+
+    
+
 
     export class TargetGroup {
 
         public name: string;
 
         public maxDistance: DistanceModel;
+        public ownDistanceA: number;
+        public ownDistanceR: number;
+        public ownDistanceB: number;
+        public ownDistanceC: number;
 
         public targets: Array<Target> = new Array<Target>();
 
@@ -285,15 +291,5 @@
         public figureShift: number;
     }
 
-    //    public Guid Id { get; set; }
-    //public string Supplier { get; set; }
-    //public string Article { get; set; }
-    //public string Color { get; set; }
-    //public string Size { get; set; }
-    //public int FigureGroup { get; set; }
-    //public int FigureShift { get; set; }
-
-    //public string Description { get; set; }
-    //public string ImagePath { get; set; }
 
 }
