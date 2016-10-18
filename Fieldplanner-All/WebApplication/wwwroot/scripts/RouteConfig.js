@@ -31,8 +31,8 @@ var app;
                 });
                 this.$stateProvider.state("planner", {
                     url: "/planner",
-                    templateUrl: "views/planner.html",
-                    controller: app.components.planner.PlannerController.controllerId,
+                    templateUrl: "views/stationplanner.html",
+                    controller: app.components.planner.StationPlannerController.controllerId,
                     controllerAs: "vm"
                 });
             }

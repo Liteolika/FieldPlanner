@@ -36,8 +36,8 @@
 
             this.$stateProvider.state("planner", <ng.ui.IState>{
                 url: "/planner",
-                templateUrl: "views/planner.html",
-                controller: app.components.planner.PlannerController.controllerId,
+                templateUrl: "views/stationplanner.html",
+                controller: app.components.planner.StationPlannerController.controllerId,
                 controllerAs: "vm"
             });
 

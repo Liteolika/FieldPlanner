@@ -32,10 +32,10 @@
 
     <h2>Station {{station.number}}</h2>
 
-    <select ng-model="station.hasSupportHand" ng-options="o.v as o.n for o in [{ n: 'Nej', v: false }, { n: 'Ja', v: true }]" class="form-control"></select>
+    <!--<select ng-model="station.hasSupportHand" ng-options="o.v as o.n for o in [{ n: 'Nej', v: false }, { n: 'Ja', v: true }]" class="form-control"></select>
     <select class="form-control">
         <option ng-repeat="stance in vm.stances">{{stance}}</option>
-    </select>
+    </select>-->
 
     <button ng-show="station.targetGroups.length < 6" ng-click="vm.addTargetGroup(station)" class="btn btn-default btn-sm btn-block">Lägg till målgrupp</button>
 
@@ -57,6 +57,52 @@
             </thead>
 
             <tbody>
+                <tr>
+                    <td>Stödhand</td>
+                    <td>
+                        <select ng-model="Supporthand[station.name + 'A']" 
+                                ng-change="vm.setSupportHand(station, 'A', Supporthand[station.name + 'A'])" 
+                                ng-options="o.v as o.n for o in [{ n: 'Nej', v: false }, { n: 'Ja', v: true }]" class="form-control"></select>
+                    </td>
+                    <td>
+                        <select ng-model="Supporthand[station.name + 'R']" 
+                                ng-change="vm.setSupportHand(station, 'R', Supporthand[station.name + 'R'])" 
+                                ng-options="o.v as o.n for o in [{ n: 'Nej', v: false }, { n: 'Ja', v: true }]" class="form-control"></select>
+                    </td>
+                    <td>
+                        <select ng-model="Supporthand[station.name + 'B']" 
+                                ng-change="vm.setSupportHand(station, 'B', Supporthand[station.name + 'B'])" 
+                                ng-options="o.v as o.n for o in [{ n: 'Nej', v: false }, { n: 'Ja', v: true }]" class="form-control"></select>
+                    </td>
+                    <td>
+                        <select ng-model="Supporthand[station.name + 'C']" 
+                                ng-change="vm.setSupportHand(station, 'C', Supporthand[station.name + 'C'])" 
+                                ng-options="o.v as o.n for o in [{ n: 'Nej', v: false }, { n: 'Ja', v: true }]" class="form-control"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ställning</td>
+                    <td>
+                        <select ng-model="Stance[station.name + 'A']" ng-change="vm.setStance(station, 'A', Stance[station.name + 'A'])" class="form-control">
+                            <option ng-repeat="stance in vm.stances">{{stance}}</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select ng-model="Stance[station.name + 'R']" ng-change="vm.setStance(station, 'R', Stance[station.name + 'R'])" class="form-control">
+                            <option ng-repeat="stance in vm.stances">{{stance}}</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select ng-model="Stance[station.name + 'B']" ng-change="vm.setStance(station, 'B', Stance[station.name + 'B'])" class="form-control">
+                            <option ng-repeat="stance in vm.stances">{{stance}}</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select ng-model="Stance[station.name + 'C']" ng-change="vm.setStance(station, 'C', Stance[station.name + 'C'])" class="form-control">
+                            <option ng-repeat="stance in vm.stances">{{stance}}</option>
+                        </select>
+                    </td>
+                </tr>
                 <tr>
                     <td>Eget avstånd</td>
                     <td>

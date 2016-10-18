@@ -104,12 +104,17 @@ var app;
                     if (target.figure == null) {
                         return "N/A";
                     }
+                    var wg = WeaponGroup[weaponGroup];
                     var figureGroup = target.figure.figureGroup;
                     var maxDistance = "";
                     if (figureGroup > 1) {
-                        if (station.hasSupportHand) {
-                            figureGroup--;
-                        }
+                        station.shootingConditions.forEach(function (sc) {
+                            if (sc.weaponGroup == wg) {
+                                if (sc.hasSupportHand) {
+                                    figureGroup--;
+                                }
+                            }
+                        });
                     }
                     this.distances.forEach(function (d) {
                         if (d.figureGroup == figureGroup) {
@@ -121,6 +126,7 @@ var app;
                 PlannerController.prototype.getTargetGroupMaxDistance = function (station, targetGroup, weaponGroup) {
                     var maxFigureGroup = 0;
                     var maxDistance = "N/A";
+                    var wg = WeaponGroup[weaponGroup];
                     if (targetGroup.targets.length < 1) {
                         return maxDistance;
                     }
@@ -132,9 +138,13 @@ var app;
                         }
                     });
                     if (maxFigureGroup > 1) {
-                        if (station.hasSupportHand) {
-                            maxFigureGroup--;
-                        }
+                        station.shootingConditions.forEach(function (s) {
+                            if (s.weaponGroup == wg) {
+                                if (s.hasSupportHand) {
+                                    maxFigureGroup--;
+                                }
+                            }
+                        });
                     }
                     this.distances.forEach(function (d) {
                         if (d.figureGroup == maxFigureGroup) {
@@ -143,27 +153,23 @@ var app;
                     }, this);
                     return maxDistance;
                 };
-                PlannerController.prototype.calculateTargetGroupMaxDistance = function (station, targetGroup) {
-                    console.log("calculating max distance for targetgroup: " + targetGroup.name);
-                    var maxFigureGroup = 0;
-                    targetGroup.targets.forEach(function (t) {
-                        console.log(t.figure.description);
-                        console.log(maxFigureGroup);
-                        if (t.figure.figureGroup > maxFigureGroup) {
-                            console.log("found higher figuregroup: " + maxFigureGroup);
-                            maxFigureGroup = t.figure.figureGroup;
+                PlannerController.prototype.setSupportHand = function (station, weaponGroup, supportHand) {
+                    var wg = WeaponGroup[weaponGroup];
+                    station.shootingConditions.forEach(function (s) {
+                        if (s.weaponGroup == wg) {
+                            console.log("Setting supporthand for " + weaponGroup + " to " + supportHand);
+                            s.hasSupportHand == supportHand;
                         }
-                    }, this);
-                    this.distances.forEach(function (d) {
-                        if (d.figureGroup == maxFigureGroup) {
-                            targetGroup.maxDistance = d;
+                    });
+                };
+                PlannerController.prototype.setStance = function (station, weaponGroup, stance) {
+                    var wg = WeaponGroup[weaponGroup];
+                    station.shootingConditions.forEach(function (s) {
+                        if (s.weaponGroup == wg) {
+                            console.log("Setting stance for " + weaponGroup + " to " + stance);
+                            s.stance = stance;
                         }
-                    }, this);
-                    if (station.hasSupportHand) {
-                        if (maxFigureGroup > 1) {
-                            maxFigureGroup--;
-                        }
-                    }
+                    });
                 };
                 PlannerController.prototype.getMaxDistance = function (weapongroup, figureGroup) {
                     if (figureGroup == null)
@@ -210,12 +216,31 @@ var app;
                 function Station() {
                     this.name = "";
                     this.targetGroups = new Array();
-                    this.hasSupportHand = false;
-                    this.stance = Stance.Stående;
+                    this.shootingConditions = new Array();
+                    this.shootingConditions.push(new ShootingCondition(WeaponGroup.A));
+                    this.shootingConditions.push(new ShootingCondition(WeaponGroup.R));
+                    this.shootingConditions.push(new ShootingCondition(WeaponGroup.B));
+                    this.shootingConditions.push(new ShootingCondition(WeaponGroup.C));
                 }
                 return Station;
             }());
             planner.Station = Station;
+            var ShootingCondition = (function () {
+                function ShootingCondition(weaponGroup) {
+                    this.hasSupportHand = false;
+                    this.stance = Stance.Stående;
+                    this.weaponGroup = weaponGroup;
+                }
+                return ShootingCondition;
+            }());
+            planner.ShootingCondition = ShootingCondition;
+            (function (WeaponGroup) {
+                WeaponGroup[WeaponGroup["A"] = 0] = "A";
+                WeaponGroup[WeaponGroup["R"] = 1] = "R";
+                WeaponGroup[WeaponGroup["B"] = 2] = "B";
+                WeaponGroup[WeaponGroup["C"] = 3] = "C";
+            })(planner.WeaponGroup || (planner.WeaponGroup = {}));
+            var WeaponGroup = planner.WeaponGroup;
             var TargetGroup = (function () {
                 function TargetGroup(name) {
                     this.targets = new Array();

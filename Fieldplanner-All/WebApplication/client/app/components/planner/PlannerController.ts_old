@@ -84,7 +84,6 @@
                 } else {
                     station.targetGroups[i].name = this.getLetter(station.targetGroups[i - 1].name);
                 }
-
             }
         }
 
@@ -99,12 +98,17 @@
                 return "N/A";
             }
 
+            var wg: WeaponGroup = WeaponGroup[weaponGroup];
             var figureGroup: number = target.figure.figureGroup;
             var maxDistance: string = "";
             if (figureGroup > 1) {
-                if (station.hasSupportHand) {
-                    figureGroup--;
-                }
+                station.shootingConditions.forEach(sc => {
+                    if (sc.weaponGroup == wg) {
+                        if (sc.hasSupportHand) {
+                            figureGroup--;
+                        }
+                    }
+                })
             }
 
             this.distances.forEach((d) => {
@@ -120,6 +124,7 @@
         public getTargetGroupMaxDistance(station: Station, targetGroup: TargetGroup, weaponGroup: string): string {
             var maxFigureGroup: number = 0;
             var maxDistance = "N/A";
+            var wg: WeaponGroup = WeaponGroup[weaponGroup];
 
             if (targetGroup.targets.length < 1) {
                 return maxDistance;
@@ -135,9 +140,18 @@
             });
 
             if (maxFigureGroup > 1) {
-                if (station.hasSupportHand) {
-                    maxFigureGroup--;
-                }
+
+                station.shootingConditions.forEach(s => {
+                    if (s.weaponGroup == wg) {
+                        if (s.hasSupportHand) {
+                            maxFigureGroup--;
+                        }
+                    }
+                });
+
+                //if (station.hasSupportHand) {
+                //    maxFigureGroup--;
+                //}
             }
 
             this.distances.forEach((d) => {
@@ -150,37 +164,30 @@
 
         }
 
-        
+        public setSupportHand(station: Station, weaponGroup: string, supportHand: boolean): void {
 
-        private calculateTargetGroupMaxDistance(station: Station, targetGroup: TargetGroup) {
+            var wg: WeaponGroup = WeaponGroup[weaponGroup];
 
-            console.log("calculating max distance for targetgroup: " + targetGroup.name);
-            var maxFigureGroup: number = 0;
-
-            targetGroup.targets.forEach((t) => {
-                console.log(t.figure.description);
-                console.log(maxFigureGroup);
-                if (t.figure.figureGroup > maxFigureGroup) {
-                    console.log("found higher figuregroup: " + maxFigureGroup);
-                    maxFigureGroup = t.figure.figureGroup;
+            station.shootingConditions.forEach(s => {
+                if (s.weaponGroup == wg) {
+                    console.log("Setting supporthand for " + weaponGroup + " to " + supportHand);
+                    s.hasSupportHand == supportHand;
                 }
-            }, this);
-
-            this.distances.forEach((d) => {
-                if (d.figureGroup == maxFigureGroup) {
-                    targetGroup.maxDistance = d;
-                }
-            }, this);
-
-
-            if (station.hasSupportHand) {
-                if (maxFigureGroup > 1) {
-                    maxFigureGroup--;
-                }
-            }
-
+            });
         }
 
+        public setStance(station: Station, weaponGroup: string, stance: Stance): void {
+            var wg: WeaponGroup = WeaponGroup[weaponGroup];
+
+            station.shootingConditions.forEach(s => {
+                if (s.weaponGroup == wg) {
+                    console.log("Setting stance for " + weaponGroup + " to " + stance);
+                    s.stance = stance;
+                }
+            });
+        }
+
+        
 
 
         public getMaxDistance(weapongroup: string, figureGroup: number): string {
@@ -248,12 +255,35 @@
         public number: number;
         public name: string = "";
         public targetGroups: Array<TargetGroup> = new Array<TargetGroup>();
-        public hasSupportHand: boolean = false;
-        public stance: Stance = Stance.Stående;
+
+        public shootingConditions: Array<ShootingCondition> = new Array<ShootingCondition>();
+
+        constructor() {
+            this.shootingConditions.push(new ShootingCondition(WeaponGroup.A));
+            this.shootingConditions.push(new ShootingCondition(WeaponGroup.R));
+            this.shootingConditions.push(new ShootingCondition(WeaponGroup.B));
+            this.shootingConditions.push(new ShootingCondition(WeaponGroup.C));
+        }
+        
     }
 
-    
+    export class ShootingCondition {
+        public weaponGroup: WeaponGroup;
+        public hasSupportHand: boolean = false;
+        public stance: Stance = Stance.Stående;
 
+        constructor(weaponGroup: WeaponGroup) {
+            this.weaponGroup = weaponGroup;
+        }
+
+    }
+
+    export enum WeaponGroup {
+        A,
+        R,
+        B,
+        C
+    }
 
     export class TargetGroup {
 

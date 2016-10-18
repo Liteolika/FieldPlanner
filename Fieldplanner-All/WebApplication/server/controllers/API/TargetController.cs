@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace WebApplication.server.controllers.API
@@ -23,7 +24,7 @@ namespace WebApplication.server.controllers.API
                     var json = string.Empty;
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "server", "statics", "targets", "targets.json");
                     using (var file = System.IO.File.Open(filePath, System.IO.FileMode.Open))
-                    using (var reader = new StreamReader(file))
+                    using (var reader = new StreamReader(file, Encoding.UTF8))
                     {
                         json = reader.ReadToEnd();
                     }
