@@ -14,10 +14,10 @@ namespace WebApplication.server.controllers.API
         {
             if (conditions.Count < 1)
             {
-                conditions.Add(new ShootingCondition("Stående utan stödhand", false, false));
-                conditions.Add(new ShootingCondition("Stående utan stödhand 45", false, true));
-                conditions.Add(new ShootingCondition("Stående", true, false));
-                conditions.Add(new ShootingCondition("Stående 45", true, true));
+                conditions.Add(new ShootingCondition("Stående utan stödhand", "Stå U", false, false));
+                conditions.Add(new ShootingCondition("Stående utan stödhand 45", "Stå U 45", false, true));
+                conditions.Add(new ShootingCondition("Stående", "Stå", true, false));
+                conditions.Add(new ShootingCondition("Stående 45", "Stå 45", true, true));
             }
         }
 
@@ -30,6 +30,7 @@ namespace WebApplication.server.controllers.API
 
     public class ShootingCondition
     {
+        public string ShortDescription { get; set; }
         public string Description { get; set; }
         public bool AngledArm { get; set; }
         public bool Supporthand { get; set; }
@@ -40,11 +41,12 @@ namespace WebApplication.server.controllers.API
 
         }
 
-        public ShootingCondition(string description, bool supporthand, bool angledArm)
+        public ShootingCondition(string description, string shortDescription, bool supporthand, bool angledArm)
         {
             AngledArm = angledArm;
             Supporthand = supporthand;
             Description = description;
+            ShortDescription = shortDescription;
         }
 
     }

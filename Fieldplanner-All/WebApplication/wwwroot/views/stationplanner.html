@@ -15,12 +15,165 @@
             </div>
 
             <div class="panel-body">
-                Things
+                
+                <div class="col-sm-6">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>Utgångsställningar</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div ng-repeat="wg in station.weaponGroups" class="col-sm-12">
+                                <div class="col-sm-3">
+                                    <h5>Vapengrupp {{wg.name}}</h5>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select ng-options="c.description for c in vm.conditions" ng-model="wg.condition" class="form-control">
+                                        <!--<option ng-repeat="condition in vm.conditions">{{condition.description}}</option>-->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    
+
+
+                </div>
+                <div class="col-sm-6">Tom just nu</div>
+                <div class="col-sm-12">
+                    <button class="btn btn-default" ng-click="station.addTargetGroup()">Lägg till målgrupp</button>
+                    <hr />
+                </div>
+
+                <div class="col-sm-12">
+
+                    <div class="panel panel-default" ng-repeat="targetGroup in station.targetGroups">
+                        <div class="panel-heading">
+                            <h5>{{targetGroup.name}}</h5>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="col-sm-12">
+                                <div class="col-sm-4">
+                                    <span>Max avstånd för målgruppen</span>
+                                    <table class="table table-condensed table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th ng-repeat="wg in station.weaponGroups">
+                                                    {{wg.name}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td ng-repeat="wg in station.weaponGroups">
+                                                    {{ vm.calculateMaxTargetGroupDistance(wg, targetGroup)}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span>Avstånd för målgruppen</span>
+                                    <table class="table table-condensed table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th ng-repeat="wg in station.weaponGroups">
+                                                    {{wg.name}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td ng-repeat="wg in station.weaponGroups">
+                                                    <input type="text" class="form-control" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span>Svårighetsgrad för målgruppen</span>
+                                    <table class="table table-condensed table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th ng-repeat="wg in station.weaponGroups">
+                                                    {{wg.name}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td ng-repeat="wg in station.weaponGroups">
+                                                    90 %
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <button class="btn btn-default" ng-click="targetGroup.addTarget()">Lägg till figur</button>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th class="bg-info" colspan="{{station.weaponGroups.length}}">
+                                            <span>Maxavstånd</span>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>Figur</th>
+                                        <th></th>
+                                        <th ng-repeat="wg in station.weaponGroups">{{wg.name}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="target in targetGroup.targets">
+                                        <td>
+                                            <img style="padding: 0;" ng-src="api/target/getimage/{{target.figure.id}}" width="24" />
+                                            {{target.figure.description}}
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    Välj
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li ng-repeat="figure in vm.figures">
+                                                        <a href="" ng-click="target.setFigure(figure)">
+                                                            <img ng-src="api/target/getimage/{{figure.id}}" width="17" />{{figure.description}}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td ng-repeat="wg in station.weaponGroups">
+                                            {{ vm.calculateMaxDistance(wg, target.figure)}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+                </div>
+
             </div>
            
         </div>
 
     </div>
+
+
 
 
 
