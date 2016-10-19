@@ -7,15 +7,38 @@
         public distances: Array<DistanceDto>;
         public stations: Array<Station> = new Array<Station>();
 
+        public calculateTargetDifficulty(weaponGroup: WeaponGroup, target: Target): number {
+            if (isNaN(weaponGroup.ownDistance)) {
+                return 0;
+            }
+
+            var maxDistance = this.calculateMaxDistance(weaponGroup, target.figure);
+            var result = (weaponGroup.ownDistance / maxDistance) * 100;
+            return Math.round(result * 100) / 100;
+
+        }
+
         public calculateTargetGroupDifficulty(weaponGroup: WeaponGroup, targetGroup: TargetGroup): number {
-            var maxDistance = this.calculateMaxTargetGroupDistance(weaponGroup, targetGroup);
 
             if (isNaN(weaponGroup.ownDistance)) {
                 return 0;
             }
 
-            var result = (weaponGroup.ownDistance / maxDistance) * 100;
+            var result: number = 0;
+            var diffs: Array<number> = new Array<number>();
+            var totalTargets = 0;
+            var totalDiff = 0;
+
+            targetGroup.targets.forEach(t => {
+                totalTargets++;
+                totalDiff += this.calculateTargetDifficulty(weaponGroup, t);
+            });
+            console.log("targets: " + totalTargets + " totalDiff: " + totalDiff);
+            result = totalDiff / totalTargets;
             return Math.round(result * 100) / 100;
+            //var maxDistance = this.calculateMaxTargetGroupDistance(weaponGroup, targetGroup);
+            //var result = (weaponGroup.ownDistance / maxDistance) * 100;
+            //return Math.round(result * 100) / 100;
 
         }
 
@@ -39,10 +62,10 @@
 
         public calculateMaxDistance(weaponGroup: WeaponGroup, figure: FigureDto): number {
 
-            console.log("Calc max dist for wg " + weaponGroup.name);
-            console.log(weaponGroup);
-            console.log(weaponGroup.condition);
-            console.log(figure);
+            //console.log("Calc max dist for wg " + weaponGroup.name);
+            //console.log(weaponGroup);
+            //console.log(weaponGroup.condition);
+            //console.log(figure);
 
             if (figure == null) {
                 return 0;
@@ -53,17 +76,17 @@
             var figureGroup = figure.figureGroup;
             if (figureGroup > 1) {
                 if (weaponGroup.condition.supporthand) {
-                    console.log("has supporthand. compensating.");
+                    //console.log("has supporthand. compensating.");
                     figureGroup--;
                 }
             }
 
-            console.log("figureGroup: " + figureGroup);
+            //console.log("figureGroup: " + figureGroup);
             
             this.distances.forEach(d => {
                 if (d.figureGroup == figureGroup) {
-                    console.log("found correct figuregroup");
-                    console.log(d);
+                    //console.log("found correct figuregroup");
+                    //console.log(d);
                     result = d[weaponGroup.name.toLowerCase()];
                 }
             });

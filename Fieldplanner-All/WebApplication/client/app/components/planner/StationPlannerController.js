@@ -12,6 +12,14 @@ var app;
                     this.getDistances();
                     this.getConditions();
                 }
+                StationPlannerController.prototype.calculateTargetGroupDifficulty = function (weaponGroup, targetGroup) {
+                    var maxDistance = this.calculateMaxTargetGroupDistance(weaponGroup, targetGroup);
+                    if (isNaN(weaponGroup.ownDistance)) {
+                        return 0;
+                    }
+                    var result = (weaponGroup.ownDistance / maxDistance) * 100;
+                    return Math.round(result * 100) / 100;
+                };
                 StationPlannerController.prototype.calculateMaxTargetGroupDistance = function (weaponGroup, targetGroup) {
                     var _this = this;
                     var maxDistance = null;
