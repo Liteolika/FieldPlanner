@@ -7,6 +7,18 @@
         public distances: Array<DistanceDto>;
         public stations: Array<Station> = new Array<Station>();
 
+        public calculateTargetGroupDifficulty(weaponGroup: WeaponGroup, targetGroup: TargetGroup): number {
+            var maxDistance = this.calculateMaxTargetGroupDistance(weaponGroup, targetGroup);
+
+            if (isNaN(weaponGroup.ownDistance)) {
+                return 0;
+            }
+
+            var result = (weaponGroup.ownDistance / maxDistance) * 100;
+            return Math.round(result * 100) / 100;
+
+        }
+
         public calculateMaxTargetGroupDistance(weaponGroup: WeaponGroup, targetGroup: TargetGroup): number {
 
             var maxDistance = null;
@@ -114,6 +126,7 @@
     export class WeaponGroup {
         public name: string;
         public condition: ConditionDto;
+        public ownDistance: number;
 
         constructor(name: string, condition: ConditionDto) {
             this.name = name;

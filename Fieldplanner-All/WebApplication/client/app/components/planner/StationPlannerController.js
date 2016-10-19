@@ -12,6 +12,46 @@ var app;
                     this.getDistances();
                     this.getConditions();
                 }
+                StationPlannerController.prototype.calculateMaxTargetGroupDistance = function (weaponGroup, targetGroup) {
+                    var _this = this;
+                    var maxDistance = null;
+                    targetGroup.targets.forEach(function (t) {
+                        var tmp = _this.calculateMaxDistance(weaponGroup, t.figure);
+                        if (maxDistance == null) {
+                            maxDistance = tmp;
+                        }
+                        if (tmp < maxDistance) {
+                            maxDistance = tmp;
+                        }
+                    });
+                    return maxDistance;
+                };
+                StationPlannerController.prototype.calculateMaxDistance = function (weaponGroup, figure) {
+                    console.log("Calc max dist for wg " + weaponGroup.name);
+                    console.log(weaponGroup);
+                    console.log(weaponGroup.condition);
+                    console.log(figure);
+                    if (figure == null) {
+                        return 0;
+                    }
+                    var result = 0;
+                    var figureGroup = figure.figureGroup;
+                    if (figureGroup > 1) {
+                        if (weaponGroup.condition.supporthand) {
+                            console.log("has supporthand. compensating.");
+                            figureGroup--;
+                        }
+                    }
+                    console.log("figureGroup: " + figureGroup);
+                    this.distances.forEach(function (d) {
+                        if (d.figureGroup == figureGroup) {
+                            console.log("found correct figuregroup");
+                            console.log(d);
+                            result = d[weaponGroup.name.toLowerCase()];
+                        }
+                    });
+                    return result;
+                };
                 StationPlannerController.prototype.addStation = function () {
                     var newStation = new Station();
                     newStation.id = this.generateId();
@@ -64,14 +104,64 @@ var app;
                 function Station() {
                     this.name = "";
                     this.weaponGroups = new Array();
+                    this.targetGroups = new Array();
                     this.weaponGroups.push(new WeaponGroup("A", null));
                     this.weaponGroups.push(new WeaponGroup("R", null));
                     this.weaponGroups.push(new WeaponGroup("B", null));
                     this.weaponGroups.push(new WeaponGroup("C", null));
                 }
+                Station.prototype.addTargetGroup = function () {
+                    if (this.targetGroups.length == 6) {
+                        return;
+                    }
+                    if (this.targetGroups.length > 0) {
+                        var lastLetter = this.targetGroups[this.targetGroups.length - 1].name;
+                        var newLetter = this.getLetter(lastLetter);
+                        this.targetGroups.push(new TargetGroup(newLetter));
+                    }
+                    else {
+                        this.targetGroups.push(new TargetGroup("A"));
+                    }
+                };
+                Station.prototype.getLetter = function (lastLetter) {
+                    if (lastLetter == "")
+                        return "A";
+                    if (lastLetter.toUpperCase() == "A")
+                        return "B";
+                    if (lastLetter.toUpperCase() == "B")
+                        return "C";
+                    if (lastLetter.toUpperCase() == "C")
+                        return "D";
+                    if (lastLetter.toUpperCase() == "D")
+                        return "E";
+                    if (lastLetter.toUpperCase() == "E")
+                        return "F";
+                    if (lastLetter.toUpperCase() == "F")
+                        return "G";
+                };
                 return Station;
             }());
             planner.Station = Station;
+            var TargetGroup = (function () {
+                function TargetGroup(name) {
+                    this.targets = new Array();
+                    this.name = name;
+                }
+                TargetGroup.prototype.addTarget = function () {
+                    this.targets.push(new Target());
+                };
+                return TargetGroup;
+            }());
+            planner.TargetGroup = TargetGroup;
+            var Target = (function () {
+                function Target() {
+                }
+                Target.prototype.setFigure = function (figure) {
+                    this.figure = figure;
+                };
+                return Target;
+            }());
+            planner.Target = Target;
             var ConditionDto = (function () {
                 function ConditionDto() {
                 }
