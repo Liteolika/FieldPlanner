@@ -37,14 +37,14 @@ describe("App", () => {
   });
 
   it("should have correct title", () => {
-    expect(comp.title).toBe("The Title");
+    expect(comp.title).toBe("Peters @angular boilerplate");
   });
 
   it("should have the correct title", () => {
     fixture.detectChanges();
     de = fixture.debugElement.query(By.css("h1"));
     el = de.nativeElement;
-    expect(el.innerHTML).toBe("The Title");
+    expect(el.innerHTML).toBe("Peters @angular boilerplate");
   });
 
 

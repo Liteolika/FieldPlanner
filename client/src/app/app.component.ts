@@ -5,11 +5,11 @@ require("./styles/custom.less");
 
 @Component({
     selector: "fs-portal",
-    template: `<h1>{{title}}</h1><p>{{greeter}}</p><field-planner></field-planner>`
+    template: `<h1>{{title}}</h1><p>{{greeter}}</p><router-outlet></router-outlet>`
 })
 export class AppComponent implements OnInit {
 
-    public title: string = "The Title";
+    public title: string = "Peters @angular boilerplate";
 
     constructor() {}
 

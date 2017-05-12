@@ -12,6 +12,9 @@ import { FieldPlannerModule } from "./fieldplanner/fieldplanner.module";
         AppRoutingModule,
         FieldPlannerModule
     ],
+    exports: [
+        
+    ],
     declarations: [
         AppComponent
     ],

@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { IFieldplannerService } from "./services/fieldplanner.service";
 
 require("./styles/fieldplanner.less");
 
@@ -8,6 +9,8 @@ require("./styles/fieldplanner.less");
 })
 export class FieldplannerComponent {
 
-
-
+    
+    constructor(private fieldplannerService: IFieldplannerService) {
+        
+    }
 }
