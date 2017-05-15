@@ -1,4 +1,5 @@
 import { UUID } from "../helpers/uuid";
+import { Station } from "./station";
 
 export class Competition {
     public id: string;

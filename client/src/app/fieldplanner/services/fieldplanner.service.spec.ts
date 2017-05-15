@@ -38,7 +38,7 @@ describe("Service: FieldplannerService", () => {
 
     });
 
-    it("should have no competition at init", async() => {
+    /*it("should have no competition at init", async() => {
         expect(fixture.competitions.length).toBe(0);
     });
 
@@ -61,11 +61,11 @@ describe("Service: FieldplannerService", () => {
         expect(c.name).toBe(name);
     });
 
-    it("should throw if competition name is empty or null", async() => {
+    it("should throw if competition name is empty or null", () => {
         expect(() => { fixture.addCompetition(""); }).toThrow(new Error("Competition name cannot be empty"));
     });
 
-    it("should select currentCompetition from id", async() => {
+    it("should select currentCompetition from id", () => {
         fixture.addCompetition("name1");
         fixture.addCompetition("name2");
         fixture.addCompetition("name3");
@@ -76,7 +76,40 @@ describe("Service: FieldplannerService", () => {
         expect(fixture.competition.id).toBe(id);
     });
 
-    
+    it ("should return id of competitions when added", () => {
+        let name = "My Competition";
+        var id = fixture.addCompetition(name);
+        var cid = fixture.competitions[0].id;
+        expect(id).toBe(cid);
+    });
+
+    it("should have an empty station list", () => {
+        var compId = fixture.addCompetition("Test");
+        fixture.selectCompetition(compId);
+        expect(fixture.competition.stations.length).toBe(0);
+    });
+
+    it("should create a station in the selected competition when added", () => {
+        var compId = fixture.addCompetition("Test");
+        fixture.selectCompetition(compId);
+        fixture.addStation();
+        expect(fixture.competition.stations.length).toBe(1);
+    });
+
+    it("should create a station in a numbering order", () => {
+        var compId = fixture.addCompetition("Test");
+        fixture.selectCompetition(compId);
+        fixture.addStation();
+        fixture.addStation();
+        fixture.addStation();
+        fixture.addStation();
+        expect(fixture.competition.stations[2].number).toBe(3);
+    });*/
+
+
+
+
+
 
 
     /*it("should create service instance", async() => {

@@ -2,6 +2,9 @@ import { TestBed, ComponentFixture } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement } from "@angular/core";
 
+import { FormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
+
 import { FieldplannerComponent } from "./fieldplanner.component";
 
 import { FieldplannerService, IFieldplannerService } from "./services/fieldplanner.service";
@@ -35,6 +38,7 @@ describe("FieldPlanner: FieldplannerComponent", () => {
   beforeEach(() => {
 
     TestBed.configureTestingModule({
+        imports: [ FormsModule, CommonModule ],
         declarations: [FieldplannerComponent],
         providers: [
             { provide: FieldplannerService, useClass: FieldplannerServiceStub }
@@ -52,7 +56,5 @@ describe("FieldPlanner: FieldplannerComponent", () => {
     expect(fixture.componentInstance instanceof FieldplannerComponent).toBe(true);
   });
 
-  
-  
 
 });
