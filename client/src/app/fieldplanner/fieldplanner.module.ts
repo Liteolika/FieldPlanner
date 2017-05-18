@@ -4,19 +4,22 @@ import { RouterModule, Routes } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 
 import { FieldplannerComponent } from "./fieldplanner.component";
-import { FieldplannerRoutingModule } from "./fieldplanner.routing";
+
 import { FieldplannerService } from "./services/fieldplanner.service";
 
+const appRoutes: Routes = [
+    { path: "fieldplanner", component: FieldplannerComponent }
+];
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        FieldplannerRoutingModule
+        RouterModule.forChild(appRoutes)
     ],
     exports: [
         FieldplannerComponent,
-        FieldplannerRoutingModule
+        RouterModule
     ],
     providers: [
         FieldplannerService

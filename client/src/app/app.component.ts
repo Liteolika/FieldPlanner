@@ -4,8 +4,8 @@ import { Component, OnInit } from "@angular/core";
 require("./styles/custom.less");
 
 @Component({
-    selector: "fs-portal",
-    template: `<h1>{{title}}</h1><p>{{greeter}}</p><router-outlet></router-outlet>`
+    selector: "fp-app",
+    templateUrl: "app.component.html"
 })
 export class AppComponent implements OnInit {
 
