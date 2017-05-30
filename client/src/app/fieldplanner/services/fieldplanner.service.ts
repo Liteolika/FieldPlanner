@@ -7,6 +7,11 @@ import { Station } from "./domain/station";
 @Injectable()
 export class FieldplannerService implements IFieldplannerService {
 
+
+    public getCompetition(id: string): any {
+        return "";
+    }
+
     /*public competitions: Array<Competition> = new Array<Competition>();
     public competition: Competition;
 
@@ -40,6 +45,7 @@ export class FieldplannerService implements IFieldplannerService {
 }
 
 export interface IFieldplannerService {
+    getCompetition(id: string): any;
     /*competitions: Array<Competition>;
     competition: Competition;
     addStation(): void;

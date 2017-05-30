@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { FieldplannerService } from "./services/fieldplanner.service";
+import { IFieldplannerService } from "./services/fieldplanner.service";
 import { Competition } from "./services/domain/competition";
 import { Station } from "./services/domain/station";
 
@@ -13,25 +13,10 @@ export class FieldplannerComponent {
 
     public newcompname: string;
 
-    constructor(private fieldplannerService: FieldplannerService) {
-
+    constructor(private fieldplannerService: IFieldplannerService) {
+        let koko = fieldplannerService.getCompetition("");
     }
 
-    /*public getCompetitions(): Array<Competition> {
-        return this.fieldplannerService.competitions;
-    }
-
-    public getCurrent(): Competition {
-        return this.fieldplannerService.competition;
-    }
-
-    public addCompetition(): void {
-        var newCompId = this.fieldplannerService.addCompetition(this.newcompname);
-        this.fieldplannerService.selectCompetition(newCompId);
-    }
-
-    public addStation(): void {
-        this.fieldplannerService.addStation();
-    }*/
+    
 
 }
